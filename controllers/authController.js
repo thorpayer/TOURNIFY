@@ -5,13 +5,20 @@ const saltRounds = 10;
 
 // Function to handle user signup
 const signup = (req, res) => {
-  const { username, email, password } = req.body;
+  const { username, email, password, confirmPassword } = req.body;
 
   // Check that username, email, and password are provided
   if (username === "" || email === "" || password === "") {
     res.status(400).render("auth/signup", {
       errorMessage:
         "All fields are mandatory. Please provide your username, email, and password.",
+    });
+    return;
+  }
+  // Check that username, email, and password are provided
+  if (password !== confirmPassword) {
+    res.status(400).render("auth/signup", {
+      errorMessage: "Passwords do not match",
     });
     return;
   }
@@ -68,7 +75,9 @@ const login = (req, res, next) => {
   User.findOne({ email })
     .then((user) => {
       if (!user) {
-        res.status(400).render("auth/login", { errorMessage: "Wrong credentials." });
+        res
+          .status(400)
+          .render("auth/login", { errorMessage: "Wrong credentials." });
         return;
       }
 
@@ -76,7 +85,9 @@ const login = (req, res, next) => {
         .compare(password, user.password)
         .then((isSamePassword) => {
           if (!isSamePassword) {
-            res.status(400).render("auth/login", { errorMessage: "Wrong credentials." });
+            res
+              .status(400)
+              .render("auth/login", { errorMessage: "Wrong credentials." });
             return;
           }
 
