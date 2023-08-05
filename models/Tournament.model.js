@@ -19,6 +19,11 @@ const tournamentSchema = new Schema(
     creator: { type: Schema.Types.ObjectId, ref: "User", required: true },
     stages: [{ type: Schema.Types.ObjectId, ref: "Stage" }],
     registrations: [{ type: Schema.Types.ObjectId, ref: "User" }],
+    status: {
+      type: String,
+      enum: ["not started", "ongoing", "paused", "completed"],
+      default: "not started",
+    },
   },
   { timestamps: true }
 );

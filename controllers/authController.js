@@ -5,17 +5,21 @@ const saltRounds = 10;
 
 // Function to handle user signup
 const signup = (req, res) => {
-  const { username, email, password, confirmPassword } = req.body;
+  const { username, fullname, email, password, confirmPassword } = req.body;
 
   // Check that username, email, and password are provided
-  if (username === "" || email === "" || password === "") {
+  if (
+    username === "" ||
+    password === "" ||
+    confirmPassword === "" ||
+    fullname == ""
+  ) {
     res.status(400).render("auth/signup", {
-      errorMessage:
-        "All fields are mandatory. Please provide your username, email, and password.",
+      errorMessage: " Please provide your username, fullname and passwords.",
     });
     return;
   }
-  // Check that username, email, and password are provided
+  // Check that password and confirmPassword are the same
   if (password !== confirmPassword) {
     res.status(400).render("auth/signup", {
       errorMessage: "Passwords do not match",
@@ -34,7 +38,12 @@ const signup = (req, res) => {
     .genSalt(saltRounds)
     .then((salt) => bcrypt.hash(password, salt))
     .then((hashedPassword) => {
-      return User.create({ username, email, password: hashedPassword });
+      return User.create({
+        username,
+        fullname,
+        email,
+        password: hashedPassword,
+      });
     })
     .then((user) => {
       res.redirect("/login");
