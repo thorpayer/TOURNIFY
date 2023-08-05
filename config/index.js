@@ -29,6 +29,8 @@ const MongoStore = require("connect-mongo");
 const MONGO_URI =
   process.env.MONGODB_URI || "mongodb://127.0.0.1:27017/tournify";
 
+const hbs = require("hbs");
+
 // Middleware configuration
 module.exports = (app) => {
   // In development environment the app logs
@@ -46,6 +48,9 @@ module.exports = (app) => {
   // AHandles access to the public folder
   app.use(express.static(path.join(__dirname, "..", "public")));
 
+  // Add partials
+  hbs.registerPartials(__dirname + "/views/partials");
+
   // Handles access to the favicon
   app.use(
     favicon(path.join(__dirname, "..", "public", "images", "favicon.ico"))
@@ -62,7 +67,7 @@ module.exports = (app) => {
         secure: process.env.NODE_ENV === "production",
         httpOnly: true,
         maxAge: 60000 * 60 * 24,
-      }, 
+      },
       store: MongoStore.create({
         mongoUrl:
           process.env.MONGODB_URI || "mongodb://127.0.0.1:27017/tournify",
