@@ -28,7 +28,12 @@ const indexRoutes = require("./routes/index.routes");
 app.use("/", indexRoutes);
 
 const authRoutes = require("./routes/auth.routes");
+const tournamentRoutes = require("./routes/tournament.routes")
+const matchRoutes = require("./routes/match.routes")
+
 app.use("/", authRoutes);
+app.use("/tournaments", tournamentRoutes);
+app.use("/matches", authRoutes);
 
 // ❗ To handle errors. Routes that don't exist or errors that you handle in specific routes
 require("./error-handling")(app);
