@@ -16,6 +16,15 @@ const userSchema = new Schema(
       trim: true,
       lowercase: true,
     },
+    fullname: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+    profilePicture: {
+      type: String,
+      required: false,
+    },
     password: {
       type: String,
       required: true,
