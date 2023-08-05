@@ -5,6 +5,7 @@ const router = express.Router();
 const {
   getAllTournaments,
   getTournamentById,
+  getAllMyTournaments,
   createTournament,
   updateTournamentById,
   deleteTournamentById,
@@ -27,6 +28,9 @@ router.get("/:tournamentId", getTournamentById);
 // Route for creating a new tournament
 router.post("/", isLoggedIn, createTournament);
 
+// Route for all my tournaments
+router.get("/my-tournaments", isLoggedIn, getAllMyTournaments);
+
 // Route for updating tournament details by ID
 router.put("/:tournamentId", isLoggedIn, updateTournamentById);
 
@@ -34,10 +38,7 @@ router.put("/:tournamentId", isLoggedIn, updateTournamentById);
 router.delete("/:tournamentId", isLoggedIn, deleteTournamentById);
 
 // Route for getting registrations for a tournament by ID
-router.get(
-  "/:tournamentId/registrations",
-  getTournamentRegistrations
-);
+router.get("/:tournamentId/registrations", getTournamentRegistrations);
 
 // Route for adding a registration for a tournament by ID
 router.post(
@@ -47,11 +48,7 @@ router.post(
 );
 
 // Route for creating a new stage for a tournament by ID
-router.post(
-  "/:tournamentId/stages",
-  isLoggedIn,
-  createTournamentStage
-);
+router.post("/:tournamentId/stages", isLoggedIn, createTournamentStage);
 
 // Route for updating a stage for a tournament by ID and stage ID
 router.put(
@@ -67,15 +64,11 @@ router.delete(
   deleteTournamentStageById
 );
 
-
 // Route for setting a match winner for a tournament's stage and match
 router.put(
   "/:tournamentId/stages/:stageId/matches/:matchId/set-winner",
   isLoggedIn,
   setMatchWinner
 );
-
-
-
 
 module.exports = router;

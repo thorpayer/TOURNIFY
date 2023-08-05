@@ -1,12 +1,69 @@
-const createTournament = (req, res) => {
+const TournamentModel = require("../models/Tournament.model");
+
+const createTournament = async (req, res) => {
   const tournamentData = req.body;
-  // Your logic to create a new tournament using tournamentData
-  // and send the response.
+
+  try {
+    // Create a new tournament using tournamentData
+    const newTournament = await TournamentModel.create(tournamentData);
+    res.redirect("/my-tournaments");
+  } catch (error) {
+    // Handle any errors that occur during the creation process
+    res
+      .status(500)
+      .render("error", { error: "Failed to create the tournament" });
+  }
 };
 
-const getAllTournaments = (req, res) => {
-  // Your logic to fetch all tournaments from the database
-  // and send the response.
+const getAllMyTournaments = async (req, res) => {
+  try {
+    const userId = req.session.currentUser._id; // Assuming the user's ID is stored in req.user._id after authentication
+
+    // Fetch the tournaments in which the user has participated (joined)
+    const joinedTournaments = await TournamentModel.find({
+      registrations: userId,
+    }).exec();
+
+    // Fetch the tournaments created by the user
+    const createdTournaments = await TournamentModel.find({
+      creator: userId,
+    }).exec();
+
+    res.render("my_tournaments", {
+      joinedTournaments,
+      createdTournaments,
+    });
+  } catch (error) {
+    // Handle any errors that occur during the fetching process
+    res.status(500).render("error", { errorMessage: "Internal Server Error" });
+  }
+};
+
+const getAllTournaments = async (req, res) => {
+  try {
+    // Fetch all tournaments from the database
+    const tournaments = await TournamentModel.find().exec();
+
+    // Separate tournaments based on their status
+    const upcomingTournaments = tournaments.filter(
+      (tournament) => tournament.status === "not started"
+    );
+    const ongoingTournaments = tournaments.filter(
+      (tournament) => tournament.status === "ongoing"
+    );
+    const completedTournaments = tournaments.filter(
+      (tournament) => tournament.status === "completed"
+    );
+
+    res.render("tournaments", {
+      upcomingTournaments,
+      ongoingTournaments,
+      completedTournaments,
+    });
+  } catch (error) {
+    // Handle any errors that occur during the fetching process
+    res.status(500).render("error", { errorMessage: "Internal Server Error" });
+  }
 };
 
 const getTournamentById = (req, res) => {
@@ -116,4 +173,5 @@ module.exports = {
   createTournamentStage,
   updateTournamentStageById,
   deleteTournamentStageById,
+  getAllMyTournaments,
 };
