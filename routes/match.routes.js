@@ -12,11 +12,11 @@ router.post(
   tournamentController.createMatch
 );
 
-// Route for getting match details by match ID
-router.get(
-  "/tournaments/:tournamentId/stages/:stageId/matches/:matchId",
-  tournamentController.getMatchById
-);
+// // Route for getting match details by match ID
+// router.get(
+//   "/tournaments/:tournamentId/stages/:stageId/matches/:matchId",
+//   tournamentController.getMatchById
+// );
 
 // Route for updating match details by match ID
 router.put(

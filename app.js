@@ -33,7 +33,7 @@ const matchRoutes = require("./routes/match.routes")
 
 app.use("/", authRoutes);
 app.use("/tournaments", tournamentRoutes);
-app.use("/matches", authRoutes);
+app.use("/matches", matchRoutes);
 
 // ❗ To handle errors. Routes that don't exist or errors that you handle in specific routes
 require("./error-handling")(app);
