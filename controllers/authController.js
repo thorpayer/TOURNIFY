@@ -46,6 +46,7 @@ const signup = (req, res) => {
       });
     })
     .then((user) => {
+      // TODO: Update this
       res.redirect("/login");
     })
     .catch((error) => {

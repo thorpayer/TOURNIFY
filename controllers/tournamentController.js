@@ -1,23 +1,48 @@
 const TournamentModel = require("../models/Tournament.model");
+const UserModel = require("../models/User.model");
+const StageModel = require("../models/Stage.model");
+const MatchModel = require("../models/Match.model");
 
-const createTournament = async (req, res) => {
-  const tournamentData = req.body;
+// TODO: add cloudinary and update banner
+const createTournament = async (req, res, next) => {
+  const {
+    name,
+    description,
+    gamePlatform,
+    game,
+    banner,
+    start_date,
+    end_date,
+    fee,
+    mode,
+    prize,
+  } = req.body;
+
+  const currentUser = req.session.currentUser;
 
   try {
-    // Create a new tournament using tournamentData
-    const newTournament = await TournamentModel.create(tournamentData);
-    res.redirect("/my-tournaments");
+    await TournamentModel.create({
+      name,
+      description,
+      gamePlatform,
+      game,
+      banner,
+      start_date,
+      end_date,
+      fee,
+      mode,
+      prize,
+      creator: currentUser._id,
+    });
+    res.redirect("/tournaments/my-tournaments");
   } catch (error) {
-    // Handle any errors that occur during the creation process
-    res
-      .status(500)
-      .render("error", { error: "Failed to create the tournament" });
+    next(error);
   }
 };
 
-const getAllMyTournaments = async (req, res) => {
+const getAllMyTournaments = async (req, res, next) => {
   try {
-    const userId = req.session.currentUser._id; // Assuming the user's ID is stored in req.user._id after authentication
+    const userId = req.session.currentUser._id;
 
     // Fetch the tournaments in which the user has participated (joined)
     const joinedTournaments = await TournamentModel.find({
@@ -29,17 +54,16 @@ const getAllMyTournaments = async (req, res) => {
       creator: userId,
     }).exec();
 
-    res.render("my_tournaments", {
+    res.render("tournaments/my-tournaments", {
       joinedTournaments,
       createdTournaments,
     });
   } catch (error) {
-    // Handle any errors that occur during the fetching process
-    res.status(500).render("error", { errorMessage: "Internal Server Error" });
+    next(error);
   }
 };
 
-const getAllTournaments = async (req, res) => {
+const getAllTournaments = async (req, res, next) => {
   try {
     // Fetch all tournaments from the database
     const tournaments = await TournamentModel.find().exec();
@@ -55,111 +79,296 @@ const getAllTournaments = async (req, res) => {
       (tournament) => tournament.status === "completed"
     );
 
-    res.render("tournaments", {
+    res.render("tournaments/tournaments", {
       upcomingTournaments,
       ongoingTournaments,
       completedTournaments,
     });
   } catch (error) {
-    // Handle any errors that occur during the fetching process
-    res.status(500).render("error", { errorMessage: "Internal Server Error" });
+    next(error);
   }
 };
 
-const getTournamentById = (req, res) => {
-  const tournamentId = req.params.tournamentId;
-  // Your logic to find the tournament by tournamentId
-  // and send the response.
+const getTournamentById = async (req, res, next) => {
+  const { tournamentId } = req.params;
+  try {
+    // Find the tournament by its ID
+    const tournament = await TournamentModel.findById(tournamentId).exec();
+    res.render("tournaments/tournament-details", {
+      tournament,
+    });
+  } catch (error) {
+    next(error);
+  }
 };
 
-const updateTournamentById = (req, res) => {
-  const tournamentId = req.params.tournamentId;
+const updateTournamentById = async (req, res, next) => {
+  const { tournamentId } = req.params;
   const updatedTournamentData = req.body;
-  // Your logic to update the tournament with tournamentId
-  // using updatedTournamentData and send the response.
+
+  try {
+    // Find the tournament by its ID and update it
+    const updatedTournament = await TournamentModel.findByIdAndUpdate(
+      tournamentId,
+      updatedTournamentData,
+      { new: true } // Return the updated tournament
+    ).exec();
+
+    // if (!updatedTournament) {
+    //   return res.redirect("/tournaments/tournament-details", {
+    //     errorMessage: "Tournament not found",
+    //   });
+    // }
+
+    res.redirect("/tournaments/my-tournaments");
+  } catch (error) {
+    next(error);
+  }
 };
 
-const deleteTournamentById = (req, res) => {
-  const tournamentId = req.params.tournamentId;
-  // Your logic to delete the tournament with tournamentId
-  // and send the response.
+const deleteTournamentById = async (req, res, next) => {
+  const { tournamentId } = req.params;
+
+  try {
+    // Find the tournament by its ID and delete it
+    await TournamentModel.findByIdAndDelete(tournamentId).exec();
+    res.redirect("tournaments/my-tournaments");
+  } catch (error) {
+    next(error);
+  }
 };
 
-const getTournamentRegistrations = (req, res) => {
-  const tournamentId = req.params.tournamentId;
-  // Your logic to fetch registrations for the tournament with tournamentId
-  // and send the response.
+const getTournamentRegistrations = async (req, res, next) => {
+  const { tournamentId } = req.params;
+
+  try {
+    // Find the tournament by its ID and populate the registrations field with User data
+    const tournament = await TournamentModel.findById(tournamentId)
+      .populate("registrations")
+      .exec();
+
+    res.render("tournaments/tournament-registrations", {
+      tournament,
+    });
+  } catch (error) {
+    next(error);
+  }
 };
 
-const addTournamentRegistration = (req, res) => {
-  const tournamentId = req.params.tournamentId;
-  const userId = req.body.userId;
-  // Your logic to add the registration for the user with userId
-  // to the tournament with tournamentId and send the response.
+const addTournamentRegistration = async (req, res, next) => {
+  const { tournamentId } = req.params;
+  const { userId } = req.session.currentUser;
+
+  try {
+    // Find the tournament by its ID
+    const tournament = await TournamentModel.findById(tournamentId).exec();
+
+    // Check if the user is already registered
+    if (tournament.registrations.includes(userId)) {
+      return res.status(400).redirect("/tournaments/my-tournaments");
+    }
+
+    // Add the user's ID to the tournament's registrations array
+    tournament.registrations.push(userId);
+    await tournament.save();
+
+    // show all registered tournaments after registration
+    res.status(200).redirect("/tournaments/my-tournaments");
+  } catch (error) {
+    next(error);
+  }
 };
 
-const createTournamentStage = (req, res) => {
-  const tournamentId = req.params.tournamentId;
-  const stageData = req.body;
-  // Your logic to create a new stage using stageData
-  // for the tournament with tournamentId and send the response.
+const createTournamentStage = async (req, res, next) => {
+  const { tournamentId } = req.params;
+  const { name, start_date, end_date } = req.body;
+
+  try {
+    // Find the tournament by its ID
+    const tournament = await TournamentModel.findById(tournamentId).exec();
+
+    // Create a new stage using stageData
+    const newStage = await StageModel.create({ name, start_date, end_date });
+
+    // Push the new stage's ID into the tournament's stages array
+    tournament.stages.push(newStage._id);
+    await tournament.save();
+
+    res.status(201).redirect(`/tournaments/${tournamentId}`);
+  } catch (error) {
+    next(error);
+  }
 };
 
-const updateTournamentStageById = (req, res) => {
+const updateTournamentStageById = async (req, res, next) => {
   const { tournamentId, stageId } = req.params;
   const updatedStageData = req.body;
-  // Your logic to update the stage with stageId
-  // for the tournament with tournamentId using updatedStageData
-  // and send the response.
+
+  try {
+    // Find the stage by its ID
+    await StageModel.findByIdAndUpdate(
+      stageId,
+      updatedStageData,
+      { new: true } // Return the updated stage
+    ).exec();
+
+    // TODO: add tournement id
+    res.status(200).redirect(`/tournaments/${tournamentId}`);
+  } catch (error) {
+    next(error);
+  }
 };
 
-const deleteTournamentStageById = (req, res) => {
+const deleteTournamentStageById = async (req, res, next) => {
   const { tournamentId, stageId } = req.params;
-  // Your logic to delete the stage with stageId
-  // for the tournament with tournamentId and send the response.
+
+  try {
+    // Find the tournament by its ID
+    const tournament = await TournamentModel.findById(tournamentId).exec();
+
+    // Find the stage by its ID and delete
+    await StageModel.findByIdAndDelete(stageId).exec();
+
+    // Remove the stage's ID from the tournament's stages array
+    if (tournament) {
+      tournament.stages.pull(stageId);
+      await tournament.save();
+    }
+
+    res.redirect(`/tournaments/my-tournaments`);
+  } catch (error) {
+    next(error);
+  }
+};
+
+const updateTournamentStatus = async (req, res, next) => {
+  const { tournamentId } = req.params;
+  const { newStatus } = req.body;
+
+  try {
+    // Find the tournament by its ID
+    const tournament = await TournamentModel.findById(tournamentId).exec();
+
+    if (tournament) {
+      // Update the tournament's status
+      tournament.status = newStatus;
+      await tournament.save();
+    }
+
+    res.status(200).render(`/tournaments/${tournament}`);
+  } catch (error) {
+    // Handle any errors that occur during the process
+    next(error);
+  }
 };
 
 // =========== Matches ===================
-const createMatch = (req, res) => {
-  const stageId = req.params.stageId;
+const createMatch = async (req, res, next) => {
+  const { tournamentId, stageId } = req.params;
   const { player1, player2 } = req.body;
-  // Your logic to create a new match in the stage with stageId,
-  // using player1 and player2 details, and send the response.
+
+  try {
+    // Find the stage by its ID
+    const stage = await StageModel.findById(stageId).exec();
+
+    // Push the new match's ID into the stage's matches array
+    if (stage) {
+      // Create a new match using player1 and player2 details
+      const newMatch = await MatchModel.create({ player1, player2 });
+
+      // add match to stage
+      stage.matches.push(newMatch._id);
+      await stage.save();
+    }
+    res.status(201).redirect(`/tournaments/${tournamentId}`);
+  } catch (error) {
+    next(error);
+  }
 };
 
-// Function to get match details by match ID
-const getMatchById = (req, res) => {
-  const matchId = req.params.matchId;
-  // Your logic to find the match by matchId
-  // and send the response.
-};
+// // Function to get match details by match ID
+// const getMatchById = async (req, res, next) => {
+//   const { tournamentId, matchId } = req.params;
+
+//   try {
+//     // Find the match by its ID
+//     const match = await MatchModel.findById(matchId).exec();
+
+//     if (!match) {
+//       return res.status(404).render(`/tournament/${tournamentId}`, {
+//         errorMessage: "Match not found",
+//       });
+//     }
+
+//     res.status(200).render("match_details", {
+//       match,
+//     });
+//   } catch (error) {
+//     next(error);
+//   }
+// };
 
 // Function to update match details by match ID
-const updateMatchById = (req, res) => {
-  const matchId = req.params.matchId;
+const updateMatchById = async (req, res, next) => {
+  const { tournamentId, matchId } = req.params;
   const updatedMatchData = req.body;
-  // Your logic to update the match with matchId
-  // using updatedMatchData and send the response.
+
+  try {
+    // Find the match by its ID and update it
+    await MatchModel.findByIdAndUpdate(
+      matchId,
+      updatedMatchData,
+      { new: true } // Return the updated match
+    ).exec();
+
+    res.redirect(`/tournaments/${tournamentId}`);
+  } catch (error) {
+    next(error);
+  }
 };
 
 // Function to update match details by match ID
-const deleteMatchById = (req, res) => {
-  const matchId = req.params.matchId;
-  // Your logic to delete the match with matchId
-  // and send the response.
+const deleteMatchById = async (req, res, next) => {
+  const { tournamentId, matchId, stageId } = req.params;
+
+  try {
+    // Find the match by its ID and delete it
+    await MatchModel.findByIdAndDelete(matchId).exec();
+
+    const stage = StageModel.findById(stageId);
+
+    if (stage) {
+      stage.matches.pull(matchId);
+    }
+
+    res.redirect(`/tournaments/${tournamentId}`);
+  } catch (error) {
+    // Handle any errors that occur during the deletion process
+    next(error);
+  }
 };
 
-const setMatchWinner = (req, res) => {
-  const { tournamentId, stageId, matchId } = req.params;
-  const winnerId = req.body.winnerId;
-  // Your logic to set the winner with winnerId for the match with matchId
-  // in the stage with stageId for the tournament with tournamentId
-  // and send the response.
+const setMatchWinner = async (req, res, next) => {
+  const { matchId, tournamentId } = req.params;
+  const { winnerId } = req.body;
+
+  try {
+    // Find the match by its ID
+    const match = await MatchModel.findById(matchId).exec();
+
+    // Update the match with the winner's ID
+    match.winner = winnerId;
+    await match.save();
+
+    res.status(200).redirect(`/tournements/${tournamentId}`);
+  } catch (error) {
+    next(error);
+  }
 };
 
 module.exports = {
   createMatch,
-  getMatchById,
+  // getMatchById,
   updateMatchById,
   deleteMatchById,
   getAllTournaments,
@@ -174,4 +383,5 @@ module.exports = {
   updateTournamentStageById,
   deleteTournamentStageById,
   getAllMyTournaments,
+  updateTournamentStatus,
 };
