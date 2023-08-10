@@ -40,6 +40,14 @@ const createTournament = async (req, res, next) => {
   }
 };
 
+const createTournamentPage = async (req, res, next) => {
+  try {
+    res.render("tournaments/create-tournament");
+  } catch (error) {
+    next(error);
+  }
+};
+
 const getAllMyTournaments = async (req, res, next) => {
   try {
     const userId = req.session.currentUser._id;
@@ -384,4 +392,5 @@ module.exports = {
   deleteTournamentStageById,
   getAllMyTournaments,
   updateTournamentStatus,
+  createTournamentPage,
 };
