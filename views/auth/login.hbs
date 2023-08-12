@@ -1,24 +1,47 @@
-<div id="login-form">
-  <h2>Log In</h2>
-  <form action="/auth/login" method="POST">
+<div
+  id="login-form"
+  class="d-flex justify-content-center flex-column align-self-center align-items-center px-4  h-75"
+>
+  <div
+    class="bg-dark py-4 px-4 d-flex flex-column justify-content-center align-content-center align-items-center col-12 col-md-7 col-lg-5  "
+  >
 
-    <label> Username
-      <input type="text" name="username" placeholder="Your username" />
-    </label>
+    <h2 class="text-light">Log In</h2>
 
-    <label> Email
-      <input type="email" name="email" placeholder="Your email" />
-    </label>
+    <form class="d-flex flex-column w-100" action="/login" method="POST">
 
-    <label> Password
-      <input type="password" name="password" placeholder="Your password" />
-    </label>
+      <label class="text-light">
+        Email
+      </label>
+      <input
+        class="mt-2 p-2"
+        type="email"
+        name="email"
+        placeholder="example@gmail.com"
+      />
 
-    <button type="submit">Log In</button>
+      <label class="text-light mt-3">
+        Password
+      </label>
+      <input
+        class="mt-2 p-2"
+        type="password"
+        name="password"
+        placeholder="Password"
+      />
 
+      <button
+        class="mt-4 px-2 py-2 bg-info border border-0 text-black fw-bold fs-6 shadow"
+        type="submit"
+      >Log In</button>
 
-    {{#if errorMessage}}
-      <p class="error">{{errorMessage}}</p>
-    {{/if}}
-  </form>
+      <p class="text-light mt-4 d-flex justify-content-center">Don't have an
+        account?
+        <span class="px-2 text-info"><a href="/signup"> Sign Up</a></span></p>
+
+      {{#if errorMessage}}
+        <p class="alert alert-danger text-danger mt-4 fw-bold " role="alert">{{errorMessage}}</p>
+      {{/if}}
+    </form>
+  </div>
 </div>

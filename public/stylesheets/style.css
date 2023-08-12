@@ -1,6 +1,13 @@
 body {
-  padding: 50px;
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  margin: 0;
+  padding: 0px;
+
+  background-color: rgb(47, 47, 47);
+}
+
+* {
+  font-family: "Orbitron", sans-serif;
+  /* font-family: "Poppins", sans-serif; */
 }
 
 a {
@@ -10,3 +17,79 @@ a {
 h1 {
   color: 15px;
 }
+
+/* main styles here */
+main {
+  min-height: 80%;
+}
+
+nav li > a {
+  color: rgb(234, 234, 234) !important;
+  font-weight: bold;
+}
+
+nav {
+z-index: 1000 !important;
+position: inherit;
+}
+
+/* end  */
+
+/* generic */
+
+.z-100 {
+  z-index: 100 !important;
+}
+
+.banner-overlay {
+  min-height: 90vh;
+  background-color: rgba(0, 0, 0, 0.6);
+  position: absolute;
+  width: 100%;
+  z-index: 5;
+}
+
+.banner-header > h1 {
+  font-size: 40px;
+  font-weight: bolder;
+  text-align: center;
+}
+
+.banner-header > p {
+  text-align: center;
+  font-weight: bold;
+  color: rgb(201, 196, 196) !important;
+}
+
+/* end */
+
+/* index page styles */
+.index-banner {
+  min-height: 90vh;
+  background: url("https://unsplash.com/photos/Mf23RF8xArY/download?ixid=M3wxMjA3fDB8MXxzZWFyY2h8MjB8fGdhbWV8ZW58MHx8fHwxNjkxNjc5MTg4fDA&force=true&w=2400");
+  background-size: cover;
+  background-position: center;
+  margin-top: -100px;
+  position: relative;
+}
+
+.index-header-content {
+  z-index: 100 !important;
+  position: relative;
+}
+/* end */
+
+
+/* tournaments */
+.tournaments-banner {
+  background: url("https://unsplash.com/photos/m3hn2Kn5Bns/download?ixid=M3wxMjA3fDB8MXxhbGx8fHx8fHx8fHwxNjkxNjk3OTY5fA&force=true&w=2400");
+}
+
+/* end */
+
+/* my-tournaments */
+
+.my-tournaments-banner {
+  background: url("/images/1252748.png");
+}
+/* end */

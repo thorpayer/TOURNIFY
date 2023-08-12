@@ -1,24 +1,80 @@
-<div id="form">
-  <h2>Sign Up</h2>
-  <form action="/auth/signup" method="POST">
+<div
+  id="login-form"
+  class="d-flex justify-content-center flex-column align-self-center align-items-center px-4 h-75"
+>
+  <div
+    class="bg-dark py-4 px-4 d-flex flex-column justify-content-center align-content-center align-items-center col-12 col-md-7 col-lg-5"
+  >
 
-    <label> Username
-      <input type="text" name="username" placeholder="Your username" />
-    </label>
+    <h2 class="text-light">Create new account</h2>
 
-    <label> Email
-      <input type="email" name="email" placeholder="Your email" />
-    </label>
+    <form class="d-flex flex-column w-100" action="/signup" method="POST">
 
-    <label> Password
-      <input type="password" name="password" placeholder="Your password" />
-    </label>
+      <label class="text-light mt-2">
+        Username
+      </label>
+      <input
+        class="mt-2 p-2 rounded-2 border-0"
+        type="text"
+        name="username"
+        placeholder="example"
+      />
 
-    <button type="submit">Sign Up</button>
+      <label class="text-light mt-4">
+        Full name
+      </label>
+      <input
+        class="mt-2 p-2 rounded-2 border-0"
+        type="text"
+        name="fullname"
+        placeholder="example"
+      />
 
+      <label class="text-light mt-4">
+        Email
+      </label>
+      <input
+        class="mt-2 p-2 rounded-2 border-0"
+        type="email"
+        name="email"
+        placeholder="example@gmail.com"
+      />
 
-    {{#if errorMessage}}
-      <p class="error">{{errorMessage}}</p>
-    {{/if}}
-  </form>
+      <label class="text-light mt-4">
+        Password
+      </label>
+      <input
+        class="mt-2 p-2 rounded-2 border-0"
+        type="password"
+        name="password"
+        placeholder="Password"
+      />
+
+      <label class="text-light mt-4">
+        Confirm Password
+      </label>
+      <input
+        class="mt-2 p-2 rounded-2 border-0"
+        type="password"
+        name="confirmPassword"
+        placeholder="Password"
+      />
+
+      <button
+        class="mt-4 px-2 py-2 bg-info border border-0 text-black fw-bold fs-6 shadow"
+        type="submit"
+      >Sign Up</button>
+
+      <p class="text-light mt-4 d-flex justify-content-center">Already have an
+        account?
+        <span class="px-2 text-info"><a href="/signup"> Login</a></span></p>
+
+      {{#if errorMessage}}
+        <p
+          class="alert alert-danger text-danger mt-4 fw-bold "
+          role="alert"
+        >{{errorMessage}}</p>
+      {{/if}}
+    </form>
+  </div>
 </div>

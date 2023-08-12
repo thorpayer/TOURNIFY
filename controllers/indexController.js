@@ -19,11 +19,7 @@ const index = async (req, res, next) => {
     })
     .catch((error) => {
       // view generated error
-      console.log(error);
-
-      res
-        .status(500)
-        .render("error", { errorMessage: "Internal Server Error" });
+      next(error);
     });
 };
 
