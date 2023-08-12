@@ -72,7 +72,7 @@ module.exports = (app) => {
         mongoUrl:
           process.env.MONGODB_URI || "mongodb://127.0.0.1:27017/tournify",
         // ttl => time to live
-        ttl: 60 * 60 * 24, // 60sec * 60min * 24h => 1 day
+        // ttl: 60 * 60 * 24, // 60sec * 60min * 24h => 1 day
       }),
     })
   );

@@ -11,10 +11,10 @@ const createTournament = async (req, res, next) => {
     gamePlatform,
     game,
     banner,
-    start_date,
-    end_date,
+    startDate,
+    endDate,
     fee,
-    mode,
+    location,
     prize,
   } = req.body;
 
@@ -27,11 +27,12 @@ const createTournament = async (req, res, next) => {
       gamePlatform,
       game,
       banner,
-      start_date,
-      end_date,
+      startDate,
+      endDate,
       fee,
-      mode,
+      location,
       prize,
+      banner: req.file.path,
       creator: currentUser._id,
     });
     res.redirect("/tournaments/my-tournaments");
@@ -62,7 +63,7 @@ const getAllMyTournaments = async (req, res, next) => {
       creator: userId,
     }).exec();
 
-    res.render("tournaments/my-tournaments", {
+    res.status(201).render("tournaments/my-tournaments", {
       joinedTournaments,
       createdTournaments,
     });

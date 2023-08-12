@@ -18,6 +18,15 @@ h1 {
   color: 15px;
 }
 
+
+
+/* generic styles */
+.h-min {
+  height: min-content !important;
+}
+
+/* end */
+
 /* main styles here */
 main {
   min-height: 80%;
@@ -92,4 +101,21 @@ position: inherit;
 .my-tournaments-banner {
   background: url("/images/1252748.png");
 }
+/* end */
+
+
+/* create tournaments */
+
+.custom-inputstyle {
+  height: 40px;
+  padding: 0 5px;
+}
+
+
+.selected-banner {
+  display: none;
+  width: 100%;
+  height: 150px;
+}
+
 /* end */
