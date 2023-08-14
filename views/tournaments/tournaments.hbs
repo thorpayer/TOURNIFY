@@ -22,3 +22,76 @@
 
   </div>
 </div>
+
+{{! content }}
+<div class="p-5">
+  {{! heading }}
+  <div class="d-flex flex-column flex-md-row justify-content-md-between">
+    <h4 class="text-white fs-6 text-center text-lg-start">Upcoming Tournaments</h4>
+    <form action="#">
+      <div class="d-flex flex-column flex-md-row gap-2">
+        {{! game type; upcoming, ongoing }}
+        <select
+          name="status"
+          class="px-3 py-2 bg-transparent border-info text-info"
+        >
+          <option value="">All tournaments</option>
+          <option value="not started">Not Started</option>
+          <option value="ongoing">In Progress</option>
+          <option value="completed">Completed</option>
+        </select>
+
+        {{! platform }}
+        <select
+          name="gamePlatform"
+          class="px-3 py-2 bg-transparent border-info text-info"
+        >
+          <option value="">All Platforms</option>
+          <option value="XBox">XBox</option>
+          <option value="PC">PC</option>
+          <option value="Playstation">Playstation</option>
+          <option value="Mobile">Mobile</option>
+        </select>
+
+        {{! search button }}
+        <a href="#">
+          <button class="bg-info border-0 fs-6 px-4 py-2 shadow-lg w-100">
+            Filter
+          </button>
+        </a>
+      </div>
+    </form>
+  </div>
+
+  <div
+    class="col-12 d-flex flex-column flex-md-row flex-wrap mt-4 d-grid gap-3"
+  >
+    {{! tournament card }}
+    {{#each tournaments}}
+      {{! TODO: Bring > for partials }}
+      {{> tournamentCard this}}
+    {{/each}}
+  </div>
+
+</div>
+
+{{#unless completedTournaments}}
+
+  <div class="p-5">
+    {{! heading }}
+    <div class="d-flex flex-column flex-md-row justify-content-md-between">
+      <h4 class="text-white fs-6 text-center text-lg-start">Archives</h4>
+    </div>
+
+    <div
+      class="col-12 d-flex flex-column flex-md-row flex-wrap mt-4 d-grid gap-3"
+    >
+      {{! tournament card }}
+      {{#each completedTournaments}}
+        {{! TODO: Bring > for partials }}
+        {{> tournamentCard this}}
+      {{/each}}
+    </div>
+
+  </div>
+{{/unless}}

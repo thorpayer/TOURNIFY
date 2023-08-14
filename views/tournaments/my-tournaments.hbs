@@ -32,21 +32,38 @@
 
     <a href="/tournaments/create-tournament">
       <button class="bg-info border-0 fs-6 px-4 py-2 shadow-lg">Create New
-        Tournament</button></a>
+        Tournament
+      </button>
+    </a>
   </div>
 
   {{! tournaments }}
 
   <div class="col-12 d-flex flex-wrap mt-4 d-grid gap-3">
     {{! tournament card }}
-  {{#each createdTournaments}}
+    {{#each createdTournaments}}
 
-  {{> createdTournamentCard this}}
+      {{> createdTournamentCard this}}
 
-  {{/each}}
+    {{/each}}
+  </div>
+</div>
 
-
-
+{{!-- joined Tournaments --}}
+<div class="p-5">
+  {{! heading }}
+  <div class="d-flex flex-column flex-md-row justify-content-lg-between">
+    <h4 class="text-white fs-6 text-center text-lg-start">Joined Tournaments</h4>
   </div>
 
+  {{! tournaments }}
+
+  <div class="col-12 d-flex flex-wrap mt-4 d-grid gap-3">
+    {{! tournament card }}
+    {{#each joinedTournaments}}
+
+      {{> archiveTournament this}}
+
+    {{/each}}
+  </div>
 </div>

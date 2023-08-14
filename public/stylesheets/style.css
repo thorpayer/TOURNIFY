@@ -42,10 +42,27 @@ nav {
 
 /* end  */
 
+
+
+/* auth styles */
+
+#signup-form {
+  margin: 18% 0 0% 0;
+  padding-bottom: 15%;
+}
+
+
+/* end */
+
+
 /* generic */
 
 .z-100 {
   z-index: 100 !important;
+}
+
+.z-150 {
+  z-index: 150 !important;
 }
 
 .font-sm {
@@ -58,6 +75,10 @@ nav {
   position: absolute;
   width: 100%;
   z-index: 5;
+}
+
+.banner-header {
+  padding-top: 10%;
 }
 
 .banner-header > h1 {
@@ -77,7 +98,7 @@ nav {
 /* index page styles */
 .index-banner {
   min-height: 90vh;
-  background: url("https://unsplash.com/photos/Mf23RF8xArY/download?ixid=M3wxMjA3fDB8MXxzZWFyY2h8MjB8fGdhbWV8ZW58MHx8fHwxNjkxNjc5MTg4fDA&force=true&w=2400");
+  background: url("https://unsplash.com/photos/nmTm7knUnqs/download?ixid=M3wxMjA3fDB8MXxhbGx8fHx8fHx8fHwxNjkyMDMwMzc5fA&force=true&w=1920");
   background-size: cover;
   background-position: center center !important;
   margin-top: -100px;
@@ -87,6 +108,17 @@ nav {
 .index-header-content {
   z-index: 100 !important;
   position: relative;
+}
+
+
+.index-create-tournament-div {
+
+  background: url("https://unsplash.com/photos/m3hn2Kn5Bns/download?ixid=M3wxMjA3fDB8MXxhbGx8fHx8fHx8fHwxNjkxNjk3OTY5fA&force=true&w=2400");
+  background-position: center center;
+}
+
+.index-create-tournament-div > div {
+  background-color: rgba(0, 0, 0, 0.8);
 }
 /* end */
 
@@ -116,7 +148,7 @@ nav {
 /* my-tournaments */
 
 .my-tournaments-banner {
-  background: url("/images/1252748.png");
+  background: url("/images/1252748.png") !important;
 }
 /* end */
 
@@ -134,3 +166,34 @@ nav {
 }
 
 /* end */
+
+
+
+
+@media (max-width: 768px) {
+  /* Apply styles only on screens with a maximum width of 768px (adjust as needed) */
+  .tournament-card {
+    width: 100% !important;
+  }
+
+  .banner-header {
+    padding-top: 30%;
+  }
+  
+  .banner-header > h1 {
+    font-size: 30px;
+    font-weight: bolder;
+    text-align: center;
+  }
+  
+  .banner-header > p {
+    text-align: center;
+    font-weight: 500;
+    color: rgb(247, 247, 247) !important;
+  }
+
+  #signup-form {
+    margin: 20% 0 0% 0;
+  }
+  
+}

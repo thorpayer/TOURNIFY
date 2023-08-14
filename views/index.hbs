@@ -10,12 +10,12 @@
         class="d-flex justify-content-center flex-column align-items-center banner-header"
       >
 
-        <h1 class="text-white col-8">
+        <h1 class="text-white col-12 col-md-8">
           Unleash Your Gaming Potential.
           <br />
           Play, Compete, Conquer!
         </h1>
-        <p class="text-white-50 col-6 mt-4">
+        <p class="text-white-50 col-10 col-md-6 mt-4">
           Ready for the ultimate gaming showdown? Join TourneyHub, the hub of
           epic tournaments and friendly competition. Sign up now and elevate
           your gaming to new heights. Don't wait, start your journey to victory
@@ -25,13 +25,13 @@
       </div>
 
       {{! scroll of ongoing tournaments }}
-      <div class="index-ongoing-tournaments w-100 h-min ">
+      <div class="index-ongoing-tournaments w-100 h-min">
 
         {{! tournament card }}
         <div class="d-flex overflow-scroll gap-3">
           {{#unless ongoingTournaments}}
             {{#each ongoingTournaments}}
-                {{> tournamentCard this}}
+              {{> tournamentCard this}}
             {{/each}}
           {{/unless}}
         </div>
@@ -41,23 +41,34 @@
 </div>
 
 {{! tournaments }}
-<div class="p-5">
+<div class="p-3 p-md-5">
   <h4 class="text-info">TOURNAMENTS</h4>
-  
+
   <div class="d-flex flex-wrap gap-3 mt-2">
     {{#each upcomingTournaments}}
       {{> tournamentCard this}}
     {{/each}}
   </div>
 
-
-  <div class="d-flex justify-content-center mt-3">
-    <a href="/tournaments" class="text-center bg-info text-black text-decoration-none px-4 py-2">View All Tournament</a>
+  <div class="d-flex justify-content-center mt-5">
+    <a
+      href="/tournaments"
+      class="text-center bg-info text-black text-decoration-none px-4 py-2"
+    >View All Tournament</a>
   </div>
 </div>
 
-
-<div class="p-5">
-  
+<div class="p-3 p-md-5 mt-0 col-12 h-50">
+  <div class="index-create-tournament-div">
+    <div
+      class="h-100 col-12 d-flex flex-column justify-content-center align-items-center"
+    >
+      <p class="text-info fs-5 fw-bolder text-center ">
+        Empower your gaming vision.
+        <br />
+        Create your tournament now!
+      </p>
+      <a href="/tournaments/create-tournament" class="px-4 py-2 bg-info border-0 shadow-lg text-black text-decoration-none">Create Tournament</a>
+    </div>
+  </div>
 </div>
-
