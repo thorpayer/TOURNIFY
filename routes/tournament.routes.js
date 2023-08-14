@@ -33,7 +33,7 @@ router.post(
 );
 
 // show create tournament form
-router.get("/create-tournament", createTournamentPage);
+router.get("/create-tournament", isLoggedIn, createTournamentPage);
 
 // Route for all my tournaments
 router.get("/my-tournaments", isLoggedIn, getAllMyTournaments);
@@ -51,11 +51,7 @@ router.delete("/:tournamentId", isLoggedIn, deleteTournamentById);
 router.get("/:tournamentId/registrations", getTournamentRegistrations);
 
 // Route for adding a registration for a tournament by ID
-router.post(
-  "/:tournamentId/registrations",
-  isLoggedIn,
-  addTournamentRegistration
-);
+router.get("/:tournamentId/register", isLoggedIn, addTournamentRegistration);
 
 // Route for creating a new stage for a tournament by ID
 router.post("/:tournamentId/stages", isLoggedIn, createTournamentStage);

@@ -74,23 +74,35 @@ const getAllMyTournaments = async (req, res, next) => {
 
 const getAllTournaments = async (req, res, next) => {
   try {
-    // Fetch all tournaments from the database
-    const tournaments = await TournamentModel.find().exec();
+    const { status, gamePlatform } = req.query;
+
+    // Build the query object based on the provided search parameters
+    const query = {};
+    if (status) {
+      query.status = status;
+    }
+    if (gamePlatform) {
+      query.gamePlatform = gamePlatform;
+    }
+
+    // Fetch tournaments from the database based on the query
+    const tournaments = await TournamentModel.find(query).exec();
 
     // Separate tournaments based on their status
     const upcomingTournaments = tournaments.filter(
       (tournament) => tournament.status === "not started"
     );
+
     const ongoingTournaments = tournaments.filter(
       (tournament) => tournament.status === "ongoing"
     );
+
     const completedTournaments = tournaments.filter(
       (tournament) => tournament.status === "completed"
     );
 
     res.render("tournaments/tournaments", {
-      upcomingTournaments,
-      ongoingTournaments,
+      tournaments: [...upcomingTournaments, ...ongoingTournaments],
       completedTournaments,
     });
   } catch (error) {
@@ -166,23 +178,28 @@ const getTournamentRegistrations = async (req, res, next) => {
 
 const addTournamentRegistration = async (req, res, next) => {
   const { tournamentId } = req.params;
-  const { userId } = req.session.currentUser;
+  const { _id } = req.session.currentUser;
+  console.log(_id);
 
   try {
-    // Find the tournament by its ID
-    const tournament = await TournamentModel.findById(tournamentId).exec();
+    if (_id) {
+      // Find the tournament by its ID
+      const tournament = await TournamentModel.findById(tournamentId).exec();
 
-    // Check if the user is already registered
-    if (tournament.registrations.includes(userId)) {
-      return res.status(400).redirect("/tournaments/my-tournaments");
+      // Check if the user is already registered
+      if (tournament.registrations.includes(_id)) {
+        return res.status(400).redirect("/tournaments/my-tournaments");
+      }
+
+      // Add the user's ID to the tournament's registrations array
+      tournament.registrations.push(_id);
+      await tournament.save();
+
+      // show all registered tournaments after registration
+      res.status(200).redirect("/tournaments/my-tournaments");
+    } else {
+      res.redirect("/login");
     }
-
-    // Add the user's ID to the tournament's registrations array
-    tournament.registrations.push(userId);
-    await tournament.save();
-
-    // show all registered tournaments after registration
-    res.status(200).redirect("/tournaments/my-tournaments");
   } catch (error) {
     next(error);
   }
