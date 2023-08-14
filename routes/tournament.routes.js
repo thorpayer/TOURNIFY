@@ -1,5 +1,6 @@
 const express = require("express");
 const router = express.Router();
+const fileUploader = require("../config/cloudinary.config");
 
 // Import the controller functions for tournament operations
 const {
@@ -24,7 +25,12 @@ const isLoggedIn = require("../middleware/isLoggedIn");
 router.get("/", getAllTournaments);
 
 // Route for creating a new tournament
-router.post("/", isLoggedIn, createTournament);
+router.post(
+  "/create-tournament",
+  isLoggedIn,
+  fileUploader.single("banner"),
+  createTournament
+);
 
 // show create tournament form
 router.get("/create-tournament", createTournamentPage);

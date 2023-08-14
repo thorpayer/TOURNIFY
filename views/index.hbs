@@ -3,7 +3,7 @@
   <div class="banner-overlay index-banner-overlay"></div>
   <div class="index-banner">
     <div
-      class="p-4 d-flex justify-content-center align-items-center h-75 index-header-content"
+      class="p-4 d-flex flex-column justify-content-center align-items-center h-75 index-header-content"
     >
       {{! header content }}
       <div
@@ -25,21 +25,39 @@
       </div>
 
       {{! scroll of ongoing tournaments }}
-      <div class="index-ongoing-tournaments">
+      <div class="index-ongoing-tournaments w-100 h-min ">
 
         {{! tournament card }}
-        <div>
-
+        <div class="d-flex overflow-scroll gap-3">
+          {{#unless ongoingTournaments}}
+            {{#each ongoingTournaments}}
+                {{> tournamentCard this}}
+            {{/each}}
+          {{/unless}}
         </div>
       </div>
-
     </div>
-
   </div>
 </div>
 
-{{! in progress }}
-
 {{! tournaments }}
+<div class="p-5">
+  <h4 class="text-info">TOURNAMENTS</h4>
+  
+  <div class="d-flex flex-wrap gap-3 mt-2">
+    {{#each upcomingTournaments}}
+      {{> tournamentCard this}}
+    {{/each}}
+  </div>
 
-{{! create tournaments }}
+
+  <div class="d-flex justify-content-center mt-3">
+    <a href="/tournaments" class="text-center bg-info text-black text-decoration-none px-4 py-2">View All Tournament</a>
+  </div>
+</div>
+
+
+<div class="p-5">
+  
+</div>
+
