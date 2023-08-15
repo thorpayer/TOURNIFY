@@ -13,7 +13,7 @@ const tournamentSchema = new Schema(
     banner: { type: String, required: true },
     startDate: { type: Date, required: true },
     endDate: { type: Date, required: true },
-    fee: { type: Number, required: true },
+    fee: { type: String, required: true },
     location: { type: String, required: true },
     prize: { type: String, required: true },
     creator: { type: Schema.Types.ObjectId, ref: "User", required: true },
