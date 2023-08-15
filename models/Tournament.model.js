@@ -14,7 +14,7 @@ const tournamentSchema = new Schema(
     startDate: { type: Date, required: true },
     endDate: { type: Date, required: true },
     fee: { type: String, required: true },
-    location: { type: String, required: true },
+    streamLink: { type: String, required: true },
     prize: { type: String, required: true },
     creator: { type: Schema.Types.ObjectId, ref: "User", required: true },
     stages: [{ type: Schema.Types.ObjectId, ref: "Stage" }],

@@ -1,7 +1,7 @@
 <div class="px-5 py-4">
-  <h5 class="text-info fw-bold">Create New Tournament</h5>
+  <h5 class="text-info fw-bold">Edit Tournament</h5>
   <form
-    action="/tournaments/create-tournament"
+    action="/tournaments/{{tournament._id}}/update"
     method="POST"
     enctype="multipart/form-data"
   >
@@ -14,6 +14,7 @@
             <label for="name" class="text-info">Tournament Name</label>
             <input
               type="text"
+              value="{{tournament.name}}"
               name="name"
               required
               class="mt-2 border-info rounded custom-inputstyle"
@@ -22,19 +23,15 @@
 
           <div class="d-flex flex-column w-100">
             <label for="gamePlatform" class="text-info">Gaming Platform</label>
-            {{! <input type="text" class=""/> }}
-            <select
-              name="gamePlatform"
-              required
-              class="p-2 mt-2 border-info rounded custom-inputstyle"
-            >
-              <option value="">Choose Gaming Platform</option>
-              <option value="XBox">XBox</option>
-              <option value="PC">PC</option>
-              <option value="Playstation">Playstation</option>
-              <option value="Mobile">Mobile</option>
+            <select name="gamePlatform" required class="p-2 mt-2 border-info rounded custom-inputstyle">
+                <option value="">Choose Gaming Platform</option>
+                <option value="XBox" {{#ifEquals tournament.gamePlatform "XBox"}}selected{{/ifEquals}}>XBox</option>
+                <option value="PC" {{#ifEquals tournament.gamePlatform "PC"}}selected{{/ifEquals}}>PC</option>
+                <option value="Playstation" {{#ifEquals tournament.gamePlatform "Playstation"}}selected{{/ifEquals}}>Playstation</option>
+                <option value="Mobile" {{#ifEquals tournament.gamePlatform "Mobile"}}selected{{/ifEquals}}>Mobile</option>
             </select>
           </div>
+
         </div>
 
         {{! description }}
@@ -46,7 +43,7 @@
             rows="20"
             required
             class="p-2 mt-2 border-info rounded"
-          ></textarea>
+          >{{tournament.description}}</textarea>
         </div>
 
       </div>
@@ -62,6 +59,7 @@
           <input
             type="text"
             name="game"
+            value="{{tournament.game}}"
             required
             class="mt-2 border-info rounded custom-inputstyle"
           />
@@ -73,7 +71,8 @@
           <input
             type="date"
             name="startDate"
-            required
+            value="{{formatDateForHTML tournament.startDate}}"
+            
             class="mt-2 border-info rounded custom-inputstyle"
           />
         </div>
@@ -84,7 +83,8 @@
           <input
             type="date"
             name="endDate"
-            required
+            value="{{formatDateForHTML tournament.endDate}}"
+            
             class="mt-2 border-info rounded custom-inputstyle"
           />
         </div>
@@ -94,6 +94,7 @@
           <input
             type="text"
             name="fee"
+            value="{{tournament.fee}}"
             required
             class="mt-2 border-info rounded custom-inputstyle"
           />
@@ -105,6 +106,7 @@
           <input
             type="text"
             name="streamLink"
+            value="{{tournament.streamLink}}"
             required
             class="mt-2 border-info rounded custom-inputstyle"
           />
@@ -116,6 +118,7 @@
           <input
             type="text"
             name="prize"
+            value="{{tournament.prize}}"
             required
             class="mt-2 border-info rounded custom-inputstyle"
           />
@@ -131,7 +134,6 @@
           <input
             class="form-control form-control-sm mt-2"
             id="formFileSm"
-            required
             name="banner"
             type="file"
             accept="image/jpeg, image/png, image/jpg"
@@ -140,10 +142,10 @@
         </div>
 
         {{! show selected image here }}
-        <div class="selected-banner mt-3 w-100">
+        <div class="mt-3 w-100">
           <img
             id="selectedImage"
-            src=""
+            src="{{tournament.banner}}"
             alt="Selected Banner"
             class="w-100 h-50 mt-3"
           />
@@ -153,7 +155,7 @@
           <button
             class="mt-4 px-2 py-2 bg-info border border-0 text-black fw-bold fs-6 shadow w-100"
             type="submit"
-          >Create New Tournament</button>
+          >Update Tournament</button>
         </div>
       </div>
     </div>

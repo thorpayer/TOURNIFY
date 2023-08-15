@@ -123,25 +123,78 @@ const getTournamentById = async (req, res, next) => {
   }
 };
 
+const getTournamentToUpdate = async (req, res, next) => {
+  const { tournamentId } = req.params;
+  try {
+    // Find the tournament by its ID
+    const tournament = await TournamentModel.findById(tournamentId).exec();
+
+    if (
+      tournament &&
+      req.session.currentUser._id === tournament.creator.toHexString()
+    ) {
+      res.render("tournaments/edit-tournament", {
+        tournament,
+      });
+    } else {
+      res.redirect("/");
+    }
+  } catch (error) {
+    next(error);
+  }
+};
+
 const updateTournamentById = async (req, res, next) => {
   const { tournamentId } = req.params;
-  const updatedTournamentData = req.body;
+
+  const {
+    name,
+    description,
+    gamePlatform,
+    game,
+    banner,
+    startDate,
+    endDate,
+    fee,
+    location,
+    prize,
+  } = req.body;
+
+  console.log(req.body);
+
+  // if (req.file) {
+  //   console.log(req.file.path);
+  // }
 
   try {
-    // Find the tournament by its ID and update it
-    const updatedTournament = await TournamentModel.findByIdAndUpdate(
-      tournamentId,
-      updatedTournamentData,
-      { new: true } // Return the updated tournament
-    ).exec();
+    const tournament = await TournamentModel.findById(tournamentId).exec();
 
-    // if (!updatedTournament) {
-    //   return res.redirect("/tournaments/tournament-details", {
-    //     errorMessage: "Tournament not found",
-    //   });
-    // }
-
-    res.redirect("/tournaments/my-tournaments");
+    if (tournament.creator.toHexString() === req.session.currentUser._id) {
+      // Find the tournament by its ID and update it
+      const updatedTournament = await TournamentModel.findByIdAndUpdate(
+        tournamentId,
+        {
+          name,
+          description,
+          gamePlatform,
+          game,
+          banner,
+          startDate,
+          endDate,
+          fee,
+          location,
+          prize,
+          banner: req.file != null ? req.file.path : tournament.banner,
+        },
+        { new: true } // Return the updated tournament
+      ).exec();
+      if (!updatedTournament) {
+        return res.redirect(`/tournaments/${tournamentId}/edit`);
+      }
+      res.redirect("/tournaments/my-tournaments");
+    } else {
+      res.redirect("/tournaments/my-tournaments");
+    }
   } catch (error) {
     next(error);
   }
@@ -179,7 +232,6 @@ const getTournamentRegistrations = async (req, res, next) => {
 const addTournamentRegistration = async (req, res, next) => {
   const { tournamentId } = req.params;
   const { _id } = req.session.currentUser;
-  console.log(_id);
 
   try {
     if (_id) {
@@ -411,4 +463,5 @@ module.exports = {
   getAllMyTournaments,
   updateTournamentStatus,
   createTournamentPage,
+  getTournamentToUpdate,
 };

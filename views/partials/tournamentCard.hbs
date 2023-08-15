@@ -47,8 +47,8 @@
 
       <div class="d-flex flex-column justify-content-center">
         <p class="text-info align-content-center d-flex font-sm">
-          <i class="bi bi-geo-alt fs-5 me-3"></i>
-          {{location}}</p>
+          <i class="bi bi-cast fs-5 me-3"></i>
+          <a href="{{streamLink}}" target="_blank">Stream</a></p>
       </div>
 
       {{! button }}
@@ -102,7 +102,10 @@
               >Cancel
               </button>
               <button type="button" class="btn btn-success">
-                <a class="text-decoration-none text-white" href="/tournaments/{{_id}}/register">
+                <a
+                  class="text-decoration-none text-white"
+                  href="/tournaments/{{_id}}/register"
+                >
                   Register
                 </a>
               </button>

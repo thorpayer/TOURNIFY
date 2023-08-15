@@ -14,7 +14,6 @@ const express = require("express");
 const hbs = require("hbs");
 const formatDate = require("./utils/format.date");
 
-
 const app = express();
 
 // ℹ️ This function is getting exported from the config folder. It runs most pieces of middleware
@@ -23,6 +22,17 @@ require("./config")(app);
 // Add partials
 hbs.registerPartials(__dirname + "/views/partials/");
 hbs.registerHelper("formatDate", formatDate);
+hbs.registerHelper("ifEquals", function (arg1, arg2, options) {
+  return arg1 === arg2 ? options.fn(this) : options.inverse(this);
+});
+hbs.registerHelper("formatDateForHTML", function (dateString) {
+  const date = new Date(dateString);
+  const year = date.getFullYear();
+  const month = (date.getMonth() + 1).toString().padStart(2, "0");
+  const day = date.getDate().toString().padStart(2, "0");
+
+  return `${year}-${month}-${day}`;
+});
 
 const capitalize = require("./utils/capitalize");
 const projectName = "tournify";
