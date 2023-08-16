@@ -103,7 +103,7 @@ const login = (req, res, next) => {
 
           req.session.currentUser = user.toObject();
           delete req.session.currentUser.password;
-          req.app.locals.currentUser = req.session.currentUser;
+          // req.app.locals.currentUser = req.session.currentUser;
 
           res.redirect("/");
         })
@@ -126,4 +126,35 @@ const logout = (req, res) => {
   });
 };
 
-module.exports = { signup, login, logout };
+const getProfile = (req, res, next) => {
+  const { currentUser } = req.session;
+
+  User.findById(currentUser._id)
+    .then((user) => {
+      res.render("profile", { user });
+    })
+    .catch((error) => {
+      next(error);
+    });
+};
+
+const updateProfile = (req, res, next) => {
+  const { fullname, username, twitch } = req.body;
+  const currentUser = req.session;
+
+  User.findByIdAndUpdate(
+    currentUser._id,
+    {
+      fullname,
+      username,
+      profilePicture:
+        req.file != null ? req.file.profilePicture : currentUser.profilePicture,
+      twitch: twitch != null ? twitch : currentUser.twitch,
+    },
+    { new: true }
+  );
+
+  res.redirect("/profile");
+};
+
+module.exports = { getProfile, updateProfile, signup, login, logout };

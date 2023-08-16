@@ -25,6 +25,10 @@ const userSchema = new Schema(
       type: String,
       required: false,
     },
+    twitch: {
+      type: String,
+      required: false,
+    },
     password: {
       type: String,
       required: true,

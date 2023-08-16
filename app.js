@@ -39,6 +39,13 @@ const projectName = "tournify";
 
 app.locals.appTitle = `${capitalize(projectName)} created with IronLauncher`;
 
+
+app.use(function(req, res, next) {
+  app.locals.currentUser = req.session.currentUser;
+  next();
+});
+
+
 // 👇 Start handling routes here
 const indexRoutes = require("./routes/index.routes");
 app.use("/", indexRoutes);
