@@ -1,0 +1,57 @@
+<button
+  type="button"
+  class="btn btn-primary w-100 bg-info text-black text-decoration-none p-2 mt-3 text-center"
+  data-bs-toggle="modal"
+  data-bs-target="#staticBackdrop"
+>
+  Register
+</button>
+
+<!-- Modal -->
+<div
+  class="modal fade"
+  id="staticBackdrop"
+  data-bs-backdrop="static"
+  data-bs-keyboard="false"
+  tabindex="-1"
+  aria-labelledby="staticBackdropLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content bg-dark">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5 text-info" id="staticBackdropLabel">Confirm
+          Registration</h1>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+
+      <div class="modal-body">
+        <p class="text-info">Are you sure you want to register for this
+          tournament?
+        </p>
+      </div>
+
+      <div class="modal-footer">
+        <button
+          type="button"
+          class="btn btn-secondary"
+          data-bs-dismiss="modal"
+        >Cancel
+        </button>
+        <button type="button" class="btn btn-success">
+          <a
+            class="text-decoration-none text-white"
+            href="/tournaments/{{_id}}/register"
+          >
+            Register
+          </a>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

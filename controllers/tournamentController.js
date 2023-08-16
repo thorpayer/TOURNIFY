@@ -114,7 +114,9 @@ const getTournamentById = async (req, res, next) => {
   const { tournamentId } = req.params;
   try {
     // Find the tournament by its ID
-    const tournament = await TournamentModel.findById(tournamentId).exec();
+    const tournament = await TournamentModel.findById(tournamentId)
+      .populate(["stages", "registrations"])
+      .exec();
     res.render("tournaments/tournament-details", tournament);
   } catch (error) {
     next(error);
