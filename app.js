@@ -34,17 +34,30 @@ hbs.registerHelper("formatDateForHTML", function (dateString) {
   return `${year}-${month}-${day}`;
 });
 
+hbs.registerHelper("getPlatformIcon", function (gamePlatform) {
+  switch (gamePlatform) {
+    case "XBox":
+      return "/images/xbox.svg";
+    case "PC":
+      return "/images/pc.svg";
+    case "Playstation":
+      return "/images/playstation.svg";
+    case "Mobile":
+      return "/images/phone.svg";
+    default:
+      return "/images/game.svg";
+  }
+});
+
 const capitalize = require("./utils/capitalize");
 const projectName = "tournify";
 
 app.locals.appTitle = `${capitalize(projectName)} created with IronLauncher`;
 
-
-app.use(function(req, res, next) {
+app.use(function (req, res, next) {
   app.locals.currentUser = req.session.currentUser;
   next();
 });
-
 
 // 👇 Start handling routes here
 const indexRoutes = require("./routes/index.routes");

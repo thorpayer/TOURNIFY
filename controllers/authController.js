@@ -1,6 +1,7 @@
 const bcrypt = require("bcryptjs");
 const mongoose = require("mongoose");
 const User = require("../models/User.model");
+const TournamentModel = require("../models/Tournament.model");
 const saltRounds = 10;
 
 // Function to handle user signup
@@ -43,6 +44,7 @@ const signup = (req, res) => {
         fullname,
         email,
         password: hashedPassword,
+        profilePicture: "/images/new-user.png",
       });
     })
     .then((user) => {
@@ -126,35 +128,52 @@ const logout = (req, res) => {
   });
 };
 
-const getProfile = (req, res, next) => {
-  const { currentUser } = req.session;
+const getProfile = async (req, res, next) => {
+  try {
+    const userId = req.session.currentUser._id;
 
-  User.findById(currentUser._id)
-    .then((user) => {
-      res.render("profile", { user });
-    })
-    .catch((error) => {
-      next(error);
+    const user = await User.findById(userId);
+
+    // Fetch the tournaments in which the user has participated (joined)
+    const joinedTournaments = await TournamentModel.find({
+      registrations: userId,
+    }).exec();
+
+    // Fetch the tournaments created by the user
+    const createdTournaments = await TournamentModel.find({
+      creator: userId,
+    }).exec();
+
+    res.render("profile", {
+      currentUser: user,
+      joinedTournaments,
+      createdTournaments,
     });
+  } catch (error) {
+    next(error);
+  }
 };
 
 const updateProfile = (req, res, next) => {
   const { fullname, username, twitch } = req.body;
-  const currentUser = req.session;
+  const { currentUser } = req.session;
 
   User.findByIdAndUpdate(
     currentUser._id,
     {
       fullname,
       username,
-      profilePicture:
-        req.file != null ? req.file.profilePicture : currentUser.profilePicture,
+      profilePicture: req.file?.path ?? currentUser.profilePicture,
       twitch: twitch != null ? twitch : currentUser.twitch,
     },
     { new: true }
-  );
-
-  res.redirect("/profile");
+  )
+    .then((user) => {
+      res.redirect("/profile");
+    })
+    .catch((error) => {
+      next(error);
+    });
 };
 
 module.exports = { getProfile, updateProfile, signup, login, logout };

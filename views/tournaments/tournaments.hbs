@@ -75,7 +75,7 @@
 
 </div>
 
-{{#unless completedTournaments}}
+{{#if completedTournaments}}
 
   <div class="p-5">
     {{! heading }}
@@ -89,9 +89,9 @@
       {{! tournament card }}
       {{#each completedTournaments}}
         {{! TODO: Bring > for partials }}
-        {{> tournamentCard this}}
+        {{> archiveTournament this}}
       {{/each}}
     </div>
 
   </div>
-{{/unless}}
+{{/if}}

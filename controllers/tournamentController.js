@@ -115,9 +115,7 @@ const getTournamentById = async (req, res, next) => {
   try {
     // Find the tournament by its ID
     const tournament = await TournamentModel.findById(tournamentId).exec();
-    res.render("tournaments/tournament-details", {
-      tournament,
-    });
+    res.render("tournaments/tournament-details", tournament);
   } catch (error) {
     next(error);
   }
