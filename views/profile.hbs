@@ -108,7 +108,7 @@
   </div>
 
   {{! tournaments }}
-
+{{#if createdTournaments}}
   <div class="col-12 d-flex flex-wrap mt-4 d-grid gap-3">
     {{! tournament card }}
     {{#each createdTournaments}}
@@ -119,6 +119,12 @@
   </div>
 </div>
 
+{{else}}
+
+<p class="text-white text-center ">You have not created any tournaments!</p>
+
+{{/if}}
+
 {{! joined Tournaments }}
 <div class="p-3 p-md-5">
   {{! heading }}
@@ -127,7 +133,7 @@
   </div>
 
   {{! tournaments }}
-
+{{#if joinedTournaments}}
   <div class="col-12 d-flex flex-wrap mt-4 d-grid gap-3">
     {{! tournament card }}
     {{#each joinedTournaments}}
@@ -136,4 +142,9 @@
 
     {{/each}}
   </div>
+  {{else}}
+
+<p class="text-white text-center ">You have not joined any tournaments!</p>
+
+{{/if}}
 </div>
