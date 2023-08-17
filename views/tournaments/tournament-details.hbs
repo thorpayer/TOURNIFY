@@ -32,6 +32,45 @@
 
 {{! content }}
 
+{{! quick Updates }}
+
+{{#if (isOwner creator)}}
+  <div class="p-3 px-md-5 mb-4 h-min">
+    <h4 class="text-info">Quick Updates</h4>
+
+    <div class="p-3 border border-info mt-3">
+
+      <div class="col-12 d-flex flex-column flex-md-row gap-3 justify-content-evenly">
+{{!-- tournament status --}}
+        <div class="d-flex flex-column">
+          <label for="status" class="text-info">Change Status</label>
+          {{> changeTournamentStatusModal this}}
+        </div>
+
+        {{! add game stage }}
+        <div class="d-flex flex-column">
+          <label for="status" class="text-info">Create New Stage</label>
+          {{> createStageModal this}}
+        </div>
+
+
+        {{! add match }}
+        <div class="d-flex flex-column">
+          <label for="status" class="text-info">Create New Match</label>
+          {{> createTournamentMatch this}}
+        </div>
+
+        {{! Delete Tournament }}
+        <div class="d-flex flex-column">
+          <label for="status" class="text-danger">Delete Tournament</label>
+          {{> deleteTournamentModal this}}
+        </div>
+
+      </div>
+    </div>
+  </div>
+{{/if}}
+
 <div class="col-12 w-100 p-3 p-md-5 d-flex flex-column flex-md-row gap-3">
   <div class="col-12 col-md-7">
     <h6 class="text-info mb-2">Description</h6>
@@ -78,10 +117,10 @@
 </div>
 
 {{! stages and matches }}
-<div class="p-3 px-md-5 mb-4">
+<div class="p-3 px-md-5 mb-4 h-min h-max-50 overflow-y-scroll">
   <h4 class="text-info">Registrations</h4>
 
-  <div class="mt-3 shadow-lg">
+  <div class="mt-3 shadow-lg w-100 ">
     <table class="w-100">
       <thead class="bg-info">
         <tr>
@@ -109,3 +148,42 @@
   </div>
 
 </div>
+
+{{! stages and matches here }}
+  <div class="p-3 px-md-5 mb-4 mt-2">
+    <h4 class="text-info">Stages and Matches</h4>
+    <table class="table mt-3">
+      {{!-- <thead> --}}
+        {{!-- <tr>
+          <th>Stage Name</th>
+          <th>Player 1</th>
+          <th>Player 2</th>
+          <th>Match Date</th>
+        </tr> --}}
+      {{!-- </thead> --}}
+        {{#each stages}}
+          <thead>
+            
+            <th  class="text-center bg-info text-capitalize fs-5 " scope="row" colspan="6">{{name}}</th>
+          </thead>
+       <tbody>
+          {{#each matches}}
+            <tr>
+              <td class="bg-trans"></td>
+              <td class="text-center fw-bold bg-info-subtle">{{player1.fullname}}</td>
+              <td class="text-center bg-info">vs</td>
+              <td class="text-center fw-bold bg-info-subtle">{{player2.fullname}}</td>
+              <td class="text-center ">{{formatDate matchDate}}</td>
+              <td class="bg-trans"></td>
+            </tr>
+          {{/each}}
+      </tbody>
+        {{/each}}
+    </table>
+
+
+
+
+
+
+  </div>

@@ -7,7 +7,7 @@ const isLoggedIn = require("../middleware/isLoggedIn");
 
 // Route for creating a new match in a stage
 router.post(
-  "/tournaments/:tournamentId/stages/:stageId/matches",
+  "/tournaments/:tournamentId/stages/matches",
   isLoggedIn,
   tournamentController.createMatch
 );

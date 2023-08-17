@@ -12,6 +12,7 @@ const express = require("express");
 // Handles the handlebars
 // https://www.npmjs.com/package/hbs
 const hbs = require("hbs");
+// const ObjectId = require('mongodb').ObjectId;
 const formatDate = require("./utils/format.date");
 
 const app = express();
@@ -47,6 +48,10 @@ hbs.registerHelper("getPlatformIcon", function (gamePlatform) {
     default:
       return "/images/game.svg";
   }
+});
+
+hbs.registerHelper("isOwner", function (creator) {
+  return creator.toString() === app.locals.currentUser._id;
 });
 
 const capitalize = require("./utils/capitalize");

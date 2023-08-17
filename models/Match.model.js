@@ -5,6 +5,8 @@ const matchSchema = new Schema(
   {
     player1: { type: Schema.Types.ObjectId, ref: "User", required: true },
     player2: { type: Schema.Types.ObjectId, ref: "User", required: true },
+    matchDate: { type: Date, required: false },
+    stage: { type: Schema.Types.ObjectId, ref: "Stage" },
     winner: { type: Schema.Types.ObjectId, ref: "User" },
     status: {
       type: String,

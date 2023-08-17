@@ -1,0 +1,55 @@
+<button
+  type="button"
+  class="btn btn-primary w-100 bg-danger border-0 text-white text-decoration-none p-2 mt-2 text-center"
+  data-bs-toggle="modal"
+  data-bs-target="#deleteTournament"
+>
+  Delete
+</button>
+
+<!-- Modal -->
+<div
+  class="modal fade"
+  id="deleteTournament"
+  data-bs-backdrop="static"
+  data-bs-keyboard="false"
+  tabindex="-1"
+  aria-labelledby="deleteTournamentLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content bg-dark">
+      <div class="modal-header">
+        <h1
+          class="modal-title fs-5 text-danger"
+          id="deleteTournamentLabel"
+        >Confirm Delete</h1>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <form action="/tournaments/{{_id}}/delete" method="post">
+        <div class="modal-body">
+          <p class="text-info">Are you sure?</p>
+          <p class="text-info">This action will completely delete the tournament</p>
+        </div>
+
+        <div class="modal-footer">
+          <button
+            type="button"
+            class="btn btn-secondary"
+            data-bs-dismiss="modal"
+          >Cancel
+          </button>
+          <button type="submit" class="btn btn-danger">
+            Delete
+          </button>
+        </div>
+      </form>
+
+    </div>
+  </div>
+</div>
