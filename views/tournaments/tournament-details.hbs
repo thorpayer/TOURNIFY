@@ -116,7 +116,7 @@
   </div>
 </div>
 
-{{! stages and matches }}
+{{! registrations }}
 <div class="p-3 px-md-5 mb-4 h-min h-max-50 overflow-y-scroll">
   <h4 class="text-info">Registrations</h4>
 
@@ -129,20 +129,33 @@
           <th>Username</th>
         </tr>
       </thead>
+
       <tbody>
-        {{#each registrations}}
-          <tr class="bg-info-subtle">
-            <td>
-              <img
-                src="{{profilePicture}}"
-                alt="{{fullname}}"
-                class="img-thumbnail rounded-circle"
-                width="50"
-              /></td>
-            <td>{{fullname}}</td>
-            <td>{{username}}</td>
-          </tr>
-        {{/each}}
+        {{#if registrations}}
+          {{#each registrations}}
+            <tr class="bg-info-subtle">
+              <td>
+                <img
+                  src="{{profilePicture}}"
+                  alt="{{fullname}}"
+                  class="img-thumbnail rounded-circle"
+                  width="50"
+                /></td>
+              <td>{{fullname}}</td>
+              <td>{{username}}</td>
+            </tr>
+          {{/each}}
+
+        {{else}}
+
+<tr>
+  <td colspan="3" class="text-white p-2 text-center">
+
+  No Registrations found at the moment
+  </td>
+  </tr>
+
+        {{/if}}
       </tbody>
     </table>
   </div>
@@ -150,9 +163,11 @@
 </div>
 
 {{! stages and matches here }}
+{{#if stages}}
   <div class="p-3 px-md-5 mb-4 mt-2">
     <h4 class="text-info">Stages and Matches</h4>
-    <table class="table mt-3">
+
+    <table class="table mt-3 shadow-lg ">
       {{!-- <thead> --}}
         {{!-- <tr>
           <th>Stage Name</th>
@@ -180,10 +195,13 @@
       </tbody>
         {{/each}}
     </table>
-
-
-
-
-
-
   </div>
+
+  {{else}}
+
+
+<div class="p-3 px-md-5 mb-4 mt-2">
+    <h4 class="text-info">Stages and Matches</h4>
+    <p class="text-white text-center ">No matches found at the moment</p>
+</div>
+  {{/if}}

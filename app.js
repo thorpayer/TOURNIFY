@@ -51,7 +51,7 @@ hbs.registerHelper("getPlatformIcon", function (gamePlatform) {
 });
 
 hbs.registerHelper("isOwner", function (creator) {
-  return creator.toString() === app.locals.currentUser._id;
+  return creator.toString() === app.locals?.currentUser?._id;
 });
 
 const capitalize = require("./utils/capitalize");
