@@ -14,8 +14,7 @@ const index = async (req, res, next) => {
       .exec();
 
     res.render("index", {
-      ongoingTournaments: ongoing,
-      upcomingTournaments: upcoming.slice(0, 6),
+      tournaments: ongoing.slice(0, 3).concat(upcoming.slice(0, 3)),
     });
   } catch (error) {
     next(error);

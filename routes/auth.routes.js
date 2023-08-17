@@ -1,5 +1,6 @@
 const express = require("express");
 const router = express.Router();
+const fileUploader = require("../config/cloudinary.config");
 
 const isLoggedOut = require("../middleware/isLoggedOut");
 const isLoggedIn = require("../middleware/isLoggedIn");
@@ -20,6 +21,15 @@ router.get("/login", isLoggedOut, (req, res) => {
 
 // POST /auth/login
 router.post("/login", isLoggedOut, authController.login);
+
+// GET Profile
+router.get("/profile", isLoggedIn, authController.getProfile);
+router.post(
+  "/profile",
+  isLoggedIn,
+  fileUploader.single("profilePicture"),
+  authController.updateProfile
+);
 
 // GET /auth/logout
 router.get("/logout", isLoggedIn, authController.logout);

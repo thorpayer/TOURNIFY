@@ -71,7 +71,7 @@ nav {
 
 .banner-overlay {
   min-height: 90vh;
-  background-color: rgba(0, 0, 0, 0.6);
+  background-color: rgba(0, 0, 0, 0.8);
   position: absolute;
   width: 100%;
   z-index: 5;
@@ -90,7 +90,7 @@ nav {
 .banner-header > p {
   text-align: center;
   font-weight: bold;
-  color: rgb(201, 196, 196) !important;
+  color: rgb(243, 243, 243) !important;
 }
 
 /* end */
@@ -126,6 +126,11 @@ nav {
 .tournaments-banner {
   background: url("https://unsplash.com/photos/m3hn2Kn5Bns/download?ixid=M3wxMjA3fDB8MXxhbGx8fHx8fHx8fHwxNjkxNjk3OTY5fA&force=true&w=2400");
 }
+.tournaments-details-banner {
+  background: url("https://unsplash.com/photos/VvnTNsQgdD8/download?ixid=M3wxMjA3fDB8MXxzZWFyY2h8MTR8fGdhbWUlMjB0b3VybmFtZW50fGVufDB8fHx8MTY5MjIwMDA4MHww&force=true&w=1920");
+}
+
+
 
 .tournament-card-title > h6 {
   padding: 0;

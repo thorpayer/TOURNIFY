@@ -27,7 +27,7 @@
 <div class="p-5">
   {{! heading }}
   <div class="d-flex flex-column flex-md-row justify-content-md-between">
-    <h4 class="text-white fs-6 text-center text-lg-start">Upcoming Tournaments</h4>
+    <h4 class="text-white fs-6 text-center text-lg-start">Tournaments</h4>
     <form action="#">
       <div class="d-flex flex-column flex-md-row gap-2">
         {{! game type; upcoming, ongoing }}
@@ -75,7 +75,7 @@
 
 </div>
 
-{{#unless completedTournaments}}
+{{#if completedTournaments}}
 
   <div class="p-5">
     {{! heading }}
@@ -89,9 +89,9 @@
       {{! tournament card }}
       {{#each completedTournaments}}
         {{! TODO: Bring > for partials }}
-        {{> tournamentCard this}}
+        {{> archiveTournament this}}
       {{/each}}
     </div>
 
   </div>
-{{/unless}}
+{{/if}}

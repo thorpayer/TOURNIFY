@@ -17,6 +17,7 @@ const {
   updateTournamentStageById,
   createTournamentPage,
   deleteTournamentStageById,
+  getTournamentToUpdate,
 } = require("../controllers/tournamentController");
 
 const isLoggedIn = require("../middleware/isLoggedIn");
@@ -38,11 +39,17 @@ router.get("/create-tournament", isLoggedIn, createTournamentPage);
 // Route for all my tournaments
 router.get("/my-tournaments", isLoggedIn, getAllMyTournaments);
 
+// Route for updating tournament details by ID
+router.post(
+  "/:tournamentId/update",
+  isLoggedIn,
+  fileUploader.single("banner"),
+  updateTournamentById
+);
+router.get("/:tournamentId/edit", isLoggedIn, getTournamentToUpdate);
+
 // Route for getting tournament details by ID
 router.get("/:tournamentId", getTournamentById);
-
-// Route for updating tournament details by ID
-router.put("/:tournamentId", isLoggedIn, updateTournamentById);
 
 // Route for deleting a tournament by ID
 router.delete("/:tournamentId", isLoggedIn, deleteTournamentById);

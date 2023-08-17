@@ -25,17 +25,17 @@
       </div>
 
       {{! scroll of ongoing tournaments }}
-      <div class="index-ongoing-tournaments w-100 h-min">
+      {{!-- <div class="index-ongoing-tournaments w-100 h-min"> --}}
 
-        {{! tournament card }}
+        {{!-- {{! tournament card }}
         <div class="d-flex overflow-scroll gap-3">
-          {{#unless ongoingTournaments}}
+          {{#if ongoingTournaments}}
             {{#each ongoingTournaments}}
               {{> tournamentCard this}}
             {{/each}}
-          {{/unless}}
-        </div>
-      </div>
+          {{/if}}
+        </div> --}}
+      {{!-- </div> --}}
     </div>
   </div>
 </div>
@@ -44,8 +44,8 @@
 <div class="p-3 p-md-5">
   <h4 class="text-info">TOURNAMENTS</h4>
 
-  <div class="d-flex flex-wrap gap-3 mt-2">
-    {{#each upcomingTournaments}}
+    <div class="d-flex flex-wrap gap-3 mt-2">
+    {{#each tournaments}}
       {{> tournamentCard this}}
     {{/each}}
   </div>
