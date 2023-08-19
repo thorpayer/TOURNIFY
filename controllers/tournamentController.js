@@ -14,7 +14,7 @@ const createTournament = async (req, res, next) => {
     startDate,
     endDate,
     fee,
-    location,
+    streamLink,
     prize,
   } = req.body;
 
@@ -30,7 +30,7 @@ const createTournament = async (req, res, next) => {
       startDate,
       endDate,
       fee,
-      location,
+      streamLink,
       prize,
       banner: req.file.path,
       creator: currentUser._id,
