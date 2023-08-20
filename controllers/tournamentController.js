@@ -14,7 +14,7 @@ const createTournament = async (req, res, next) => {
     startDate,
     endDate,
     fee,
-    location,
+    streamLink,
     prize,
   } = req.body;
 
@@ -30,7 +30,7 @@ const createTournament = async (req, res, next) => {
       startDate,
       endDate,
       fee,
-      location,
+      streamLink,
       prize,
       banner: req.file.path,
       creator: currentUser._id,
@@ -115,8 +115,12 @@ const getTournamentById = async (req, res, next) => {
   try {
     // Find the tournament by its ID
     const tournament = await TournamentModel.findById(tournamentId)
-      .populate(["stages", "registrations"])
-      .exec();
+      .populate({
+        path: "stages",
+        populate: { path: "matches", populate: ["player1", "player2"] },
+      })
+      .populate("registrations");
+
     res.render("tournaments/tournament-details", tournament);
   } catch (error) {
     next(error);
@@ -200,13 +204,44 @@ const updateTournamentById = async (req, res, next) => {
   }
 };
 
+const updateTournamentStatusById = async (req, res, next) => {
+  const { tournamentId } = req.params;
+
+  const { status } = req.body;
+
+  try {
+    const tournament = await TournamentModel.findById(tournamentId).exec();
+
+    if (tournament.creator.toHexString() === req.session.currentUser._id) {
+      // Find the tournament by its ID and update it
+      const updatedTournament = await TournamentModel.findByIdAndUpdate(
+        tournamentId,
+        {
+          status,
+        },
+        { new: true } // Return the updated tournament
+      ).exec();
+
+      return res.redirect(`/tournaments/${tournamentId}`);
+    } else {
+      res.redirect("/tournaments/my-tournaments");
+    }
+  } catch (error) {
+    next(error);
+  }
+};
+
 const deleteTournamentById = async (req, res, next) => {
   const { tournamentId } = req.params;
 
   try {
-    // Find the tournament by its ID and delete it
-    await TournamentModel.findByIdAndDelete(tournamentId).exec();
-    res.redirect("tournaments/my-tournaments");
+    // Find the tournament by its ID and delete it if the creator is the loggedin user
+    const tournament = await TournamentModel.findById(tournamentId).exec();
+    if (tournament.creator.toHexString() === req.session.currentUser._id) {
+      await TournamentModel.findByIdAndDelete(tournamentId).exec();
+    }
+
+    res.redirect("/tournaments/my-tournaments");
   } catch (error) {
     next(error);
   }
@@ -342,8 +377,8 @@ const updateTournamentStatus = async (req, res, next) => {
 
 // =========== Matches ===================
 const createMatch = async (req, res, next) => {
-  const { tournamentId, stageId } = req.params;
-  const { player1, player2 } = req.body;
+  const { tournamentId } = req.params;
+  const { player1, player2, stageId, matchDate } = req.body;
 
   try {
     // Find the stage by its ID
@@ -352,7 +387,12 @@ const createMatch = async (req, res, next) => {
     // Push the new match's ID into the stage's matches array
     if (stage) {
       // Create a new match using player1 and player2 details
-      const newMatch = await MatchModel.create({ player1, player2 });
+      const newMatch = await MatchModel.create({
+        player1,
+        player2,
+        matchDate,
+        stage: stageId,
+      });
 
       // add match to stage
       stage.matches.push(newMatch._id);
@@ -464,4 +504,5 @@ module.exports = {
   updateTournamentStatus,
   createTournamentPage,
   getTournamentToUpdate,
+  updateTournamentStatusById,
 };

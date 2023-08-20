@@ -1,0 +1,81 @@
+<button
+  type="button"
+  class="btn btn-primary w-100 bg-info text-black text-decoration-none p-2 mt-2 text-center"
+  data-bs-toggle="modal"
+  data-bs-target="#createStage"
+>
+  Add Stage
+</button>
+
+<!-- Modal -->
+<div
+  class="modal fade"
+  id="createStage"
+  data-bs-backdrop="static"
+  data-bs-keyboard="false"
+  tabindex="-1"
+  aria-labelledby="createStageLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content bg-dark">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5 text-info" id="createStageLabel">Create Tournament Stage</h1>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+
+      <form action="/tournaments/{{_id}}/stages" method="post">
+        <div class="modal-body">
+          <div class="d-flex flex-column">
+            <label for="name" class="text-info mb-2">Stage Name*</label>
+            <input
+              type="text"
+              placeholder="e.g Finals"
+              class="mt-2 p-2 rounded-2 border-0"
+              name="name"
+              required
+            />
+          </div>
+        </div>
+        <div class="modal-body">
+          <div class="d-flex flex-column">
+            <label for="startDate" class="text-info mb-2">Start Date</label>
+            <input
+              type="date"
+              class="mt-2 p-2 rounded-2 border-0"
+              name="startDate"
+            />
+          </div>
+        </div>
+        <div class="modal-body">
+          <div class="d-flex flex-column">
+            <label for="endDate" class="text-info mb-2">End Date</label>
+            <input
+              type="date"
+              class="mt-2 p-2 rounded-2 border-0"
+              name="endDate"
+            />
+          </div>
+        </div>
+
+        <div class="modal-footer w-100 d-flex justify-content-between">
+          <button
+            type="button"
+            class="btn btn-secondary"
+            data-bs-dismiss="modal"
+          >Cancel
+          </button>
+          <button type="submit" class="btn btn-info">
+              Add Stage
+          </button>
+        </div>
+      </form>
+
+    </div>
+  </div>
+</div>
